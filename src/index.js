@@ -1,16 +1,16 @@
 import express from 'express';
-import cors from 'cors';
+import { idNotFound } from './middleware/index.js';
+import { moviesRouter } from './routes/movies.js';
 
 const app = express();
-const PORT = process.env.PORT ?? 6060;
+const PORT = process.env.PORT ?? 7070;
 
 // Middleware
-app.use(cors());
-
-app.get('/movies', (req, res) => {
-  res.json({ message: 'Welcome to the API' });
-});
+app.disable('x-powered-by');
+app.use(express.json());
+app.get('/movies/:id', idNotFound);
+app.use('/movies', moviesRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server running at port ${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
